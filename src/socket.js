@@ -32,7 +32,7 @@ function myArrayBuffer() {
 
 const url = new URL(window.location.href)
 
-const websocketServerPath = process.env.NODE_ENV === 'production'
+const websocketServerPath = process.env.NODE_ENV === 'rust'
     ? `${url.protocol == "https:" ? "wss" : "ws"}://${window.location.host}/ws/`
     : url.protocol == "https:"
         ? `wss://${url.hostname}/websocket/`
