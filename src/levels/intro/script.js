@@ -1,9 +1,29 @@
 import { LevelCommandsInstance as LevelCommands } from "../../engine/LevelCommands"
 import { intro_geo_0002D0, intro_geo_00035C } from "./geo"
-import { WARP_TRANSITION_FADE_FROM_STAR } from "../../game/Area"
+import { WARP_TRANSITION_FADE_INTO_COLOR, WARP_TRANSITION_FADE_FROM_STAR } from "../../game/Area"
 import { level_main_scripts_entry } from "../scripts"
 import { lvl_intro_update } from "../../menu/level_select_menu"
-import { getSelectedLevel } from "../../utils"
+import { LEVEL_CASTLE_GROUNDS, LEVEL_CASTLE_COURTYARD, LEVEL_BOB, LEVEL_CCM, LEVEL_PSS, LEVEL_TTM, LEVEL_WF, LEVEL_HMC, LEVEL_BBH, LEVEL_SSL, LEVEL_CASTLE_INSIDE } from "../level_defines_constants"
+
+const getSelectedLevel = () => {
+    const mapSelect = document.getElementById("mapSelect").value
+
+    switch (mapSelect) {
+        case "Castle Grounds": return LEVEL_CASTLE_GROUNDS
+        case "Castle Courtyard": return LEVEL_CASTLE_COURTYARD
+        case "Castle Inside": return LEVEL_CASTLE_INSIDE
+        case "Bob-omb Battlefield": return LEVEL_BOB
+        case "Cool, Cool Mountain": return LEVEL_CCM
+        case "Princess's Secret Slide": return LEVEL_PSS
+        case "Tall, Tall Mountain": return LEVEL_TTM
+        case "Whomps Fortress": return LEVEL_WF
+        case "Hazy Maze Cave": return LEVEL_HMC
+        case "Big Boo's Haunt": return LEVEL_BBH
+        case "Shifting Sand Land": return LEVEL_SSL
+    }
+
+    return LEVEL_CASTLE_GROUNDS
+}
 
 const level_intro_entry_2 = () => {
     return [
@@ -22,8 +42,8 @@ const level_intro_entry_2 = () => {
         { command: LevelCommands.load_area, args: [1] },
         /// Set Menu Music
         { command: LevelCommands.transition, args: [WARP_TRANSITION_FADE_FROM_STAR, 20, 0, 0, 0] },
-        { command: LevelCommands.reset_call_loop },
-        { command: LevelCommands.call_loop, args: [ { state: 1 }, lvl_intro_update, null] },
+        { command: LevelCommands.sleep, args: [20] },
+        { command: LevelCommands.call_loop, args: [1, lvl_intro_update, null] },
         { command: LevelCommands.unload_area, args: [1] },
         { command: LevelCommands.set_register, args: [getSelectedLevel] },
         { command: LevelCommands.execute, args: [level_main_scripts_entry] }
@@ -41,8 +61,9 @@ export const level_intro_entry_1 = [
     { command: LevelCommands.free_level_pool },
     // Call lvl intro update with var 0 - play sound its a me mario
     { command: LevelCommands.load_area, args: [1] },
-    { command: LevelCommands.reset_call_loop },
-    { command: LevelCommands.call_loop, args: [{ state: 1, maxFrames: 150 }, lvl_intro_update, null] },
+    { command: LevelCommands.sleep, args: [75] },
+    { command: LevelCommands.transition, args: [WARP_TRANSITION_FADE_INTO_COLOR, 16, 0, 0, 0] }, 
+    { command: LevelCommands.sleep, args: [16] },
     { command: LevelCommands.unload_area, args: [1] },
     { command: LevelCommands.sleep, args: [2] },
     { command: LevelCommands.execute, args: [level_intro_entry_2] }
